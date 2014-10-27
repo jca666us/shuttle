@@ -61,12 +61,14 @@ var s = {
             minutesNow = parseInt(nowHoursMinutes[1]);
             hoursNext = parseInt(depHoursMinutes[0]);
             minutesNext = parseInt(depHoursMinutes[1]);
-            /*
-            console.log('nowHoursMinutes = ' + nowHoursMinutes);
-            console.log('depHoursMinutes = ' + depHoursMinutes);
-            console.log('hoursNow = ' + hoursNow);
-            console.log('hoursNext = ' + hoursNext);
+            
+            /* DEBUGGING
+            console.log('%c nowHoursMinutes = ' + nowHoursMinutes, 'color: #ff0000;');
+            console.log('%c depHoursMinutes = ' + depHoursMinutes, 'color: #006600;');
+            console.log('%c hoursNow = ' + hoursNow, 'color: #0000ff;');
+            console.log('%c hoursNext = ' + hoursNext, 'color: #ff00ff;');
             */
+
             /* next shuttle is now */
             if (hoursNow === hoursNext && minutesNow === minutesNext) {
                 return 'NOW!';
