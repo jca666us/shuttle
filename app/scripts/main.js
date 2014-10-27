@@ -4,20 +4,22 @@ var s = {
     fawleyTimes: ['0645', '0700', '0715', '0730', '0745', '0800', '0815', '0830', '0845', '0900', '0915', '0930', '0945', '1000', '1030', '1100', '1130', '1200', '1230', '1300', '1330', '1400', '1430', '1500', '1530', '1600', '1615', '1630', '1645', '1700', '1715', '1730', '1745', '1800', '1830'],
     juniperTimes: ['0655', '0710', '0725', '0740', '0755', '0810', '0825', '0840', '0855', '0910', '0925', '0940', '0955', '1010', '1040', '1110', '1140', '1210', '1240', '1310', '1340', '1410', '1440', '1510', '1540', '1610', '1625', '1640', '1655', '1710', '1725', '1840', '1855', '1910', '1940'],
     // TODO: Add third pickup location
-    //juniperTimes: ['1940'],
+    //juniperTimes: ['0900'],
 
     currentMilitaryTime: function () {
         var now = new Date(),
-        minutes = now.getMinutes(),
-        hours = now.getHours().toString();
-
-        if (minutes < 10) {
-            minutes = '0' + minutes;
-        } else {
-            minutes = minutes.toString();
-        }
-
+        //var now = new Date(2014, 9, 27, 8, 55),
+        minutes = s.addLeadingZeros(now.getMinutes()),
+        hours = s.addLeadingZeros(now.getHours());
         return hours + minutes;
+    },
+    addLeadingZeros: function (n) {
+        if (n < 10) {
+            n = '0' + n;
+        } else {
+            n = n.toString();
+        }
+        return n;
     },
     nextShuttleTime: function (where) {
         var i, times;
@@ -59,7 +61,12 @@ var s = {
             minutesNow = parseInt(nowHoursMinutes[1]);
             hoursNext = parseInt(depHoursMinutes[0]);
             minutesNext = parseInt(depHoursMinutes[1]);
-
+            /*
+            console.log('nowHoursMinutes = ' + nowHoursMinutes);
+            console.log('depHoursMinutes = ' + depHoursMinutes);
+            console.log('hoursNow = ' + hoursNow);
+            console.log('hoursNext = ' + hoursNext);
+            */
             /* next shuttle is now */
             if (hoursNow === hoursNext && minutesNow === minutesNext) {
                 return 'NOW!';
