@@ -22,6 +22,12 @@ var s = {
         }
         return n;
     },
+    pluralize: function (value, word) {
+        if (value === 1) {
+            return value + ' ' + word;
+        }
+        return value + ' ' + word + 's';
+    },
     nextShuttleTime: function (where) {
         var i, times;
 
@@ -81,10 +87,10 @@ var s = {
                 return 'At ' + hoursNext + ':' + minutesNext;
             /* next shuttle is in the next hour */
             } else if (hoursNow < hoursNext) {
-                return 60 - minutesNow + minutesNext + ' Minutes';
+                return s.pluralize(60 - minutesNow + minutesNext, 'Minute');
             /* next shuttle is in the same hour */
             } else {
-                return minutesNext - minutesNow + ' Minutes';
+                return s.pluralize(minutesNext - minutesNow, 'Minute');
             }
 
         } else {
