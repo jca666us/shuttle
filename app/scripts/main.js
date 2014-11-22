@@ -26,6 +26,10 @@ var s = {
             hours = s.addLeadingZeros(now.getHours());
         return hours + minutes;
     },
+    currentDay: function () {
+        var now = new Date();
+        return now.getDay();
+    },
     addLeadingZeros: function (n) {
         if (n < 10) {
             n = '0' + n;
@@ -41,18 +45,23 @@ var s = {
         return value + ' ' + word + 's';
     },
     nextShuttleTime: function (where) {
-        var i, times;
+        var i, times, days;
 
-        //TODO: Only show times on weekdays
         switch (where) {
         case 'Frawley Stadium':
             times = s.dataSrc.frawley.times;
+            days = s.dataSrc.frawley.days;
             break;
         case 'Juniper Circle':
             times = s.dataSrc.juniper.times;
+            days = s.dataSrc.juniper.days;
             break;
         default:
             console.log('Invalid shuttle location');
+        }
+        // Check this is a day the shuttle runs
+        if (days.indexOf(s.currentDay()) === -1){
+            return false;
         }
 
         for (i = 0; i < times.length; i++) {
