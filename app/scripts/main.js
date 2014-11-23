@@ -51,8 +51,8 @@ var s = {
         return false;
     },
     nextShuttleTime: function (shuttleIndex) {
-        var i, times;
-        times = s.dataSrc[shuttleIndex].times;
+        var i, 
+            times = s.dataSrc[shuttleIndex].times;
             
         // Does the shuttle run today?
         if (s.noServiceToday(shuttleIndex)){
@@ -61,7 +61,7 @@ var s = {
         // Look for next shuttle time
         for (i = 0; i < times.length; i++) {
 
-            if (parseInt(times[i], 10) >= s.militaryTime(s.now)) {
+            if (parseInt(times[i], 10) >= s.militaryTime(s.now())) {
                 return times[i];
             }
         }
