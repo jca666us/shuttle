@@ -18,16 +18,16 @@ var s = {
             'days': [1, 2, 3, 4, 5]
         }
     ],
-    currentMilitaryTime: function () {
-        var now = new Date(),
-            //var now = new Date(2014, 9, 27, 8, 55),
-            minutes = s.addLeadingZeros(now.getMinutes()),
-            hours = s.addLeadingZeros(now.getHours());
+    now: function() {
+        return new Date();
+    },
+    militaryTime: function (date) {
+        var minutes = s.addLeadingZeros(date.getMinutes()),
+            hours = s.addLeadingZeros(date.getHours());
         return hours + minutes;
     },
     currentDay: function () {
-        var now = new Date();
-        return now.getDay();
+        return s.now().getDay();
     },
     addLeadingZeros: function (n) {
         if (n < 10) {
@@ -61,7 +61,7 @@ var s = {
         // Look for next shuttle time
         for (i = 0; i < times.length; i++) {
 
-            if (parseInt(times[i], 10) >= s.currentMilitaryTime()) {
+            if (parseInt(times[i], 10) >= s.militaryTime(s.now)) {
                 return times[i];
             }
         }
@@ -79,7 +79,7 @@ var s = {
         /* If there is a next shuttle */    
         if (s.nextShuttleTime(shuttleIndex)) {
             
-            nowHoursMinutes = s.currentMilitaryTime().match(/.{1,2}/g);
+            nowHoursMinutes = s.militaryTime(s.now).match(/.{1,2}/g);
             depHoursMinutes = s.nextShuttleTime(shuttleIndex).match(/.{1,2}/g);
             hoursNow = parseInt(nowHoursMinutes[0], 10);
             minutesNow = parseInt(nowHoursMinutes[1], 10);
