@@ -178,6 +178,18 @@
         assert(s.minutesUntil() === 'At 6:45');
       });
     });
+    // next shuttle is > an hour in the future
+    describe('shuttle is > an hour in the future and in the afternoon', function () {
+      it('should return proper message', function () {
+        s.now = function () {
+          return new Date('Fri Nov 21 2014 12:00:00 GMT-0500 (EST)');
+        };
+        s.nextShuttleTime = function () {
+          return '1400';
+        };
+        assert(s.minutesUntil() === 'At 2:00');
+      });
+    });
     // next shuttle is in the next hour
     describe('shuttle is in the next hour', function () {
       it('should return proper message', function () {
@@ -200,6 +212,42 @@
           return '1230';
         };
         assert(s.minutesUntil() === '15 Minutes');
+      });
+    });
+  });
+  describe('update method', function () {
+    beforeEach(function () {
+      s.temp = s.dataSrc;
+      s.temp2 = s.now;
+      s.dataSrc = [
+        {
+          'name': 'Test Location 1',
+          'times': ['0815'],
+          'days': [0]
+        },
+        {
+          'name': 'Test Location 2',
+          'times': ['0830'],
+          'days': [0]
+        }
+      ];
+    });
+    
+    afterEach(function () {
+      s.dataSrc = s.temp;
+      s.now = s.temp2;
+      s.temp = null;
+      s.temp2 = null;
+    });
+
+    describe('update', function () {
+      it('should update all nextShuttles in the data source', function () {
+        s.now = function () {
+          return new Date('Sun Nov 23 2014 08:00:00 GMT-0500 (EST)');
+        };
+        s.update();
+        assert(s.dataSrc[0].nextShuttle === '15 Minutes');
+        assert(s.dataSrc[1].nextShuttle === '30 Minutes');
       });
     });
   });

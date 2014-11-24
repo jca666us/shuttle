@@ -109,11 +109,21 @@ var s = {
             return s.noServiceMessage;
         }
     },
+    //Recalculate minutes until for each and store results
+    update: function () {
+        var shuttleIndex;
+        for (shuttleIndex = 0; shuttleIndex < s.dataSrc.length; shuttleIndex++) {
+            s.dataSrc[shuttleIndex].nextShuttle = s.minutesUntil(shuttleIndex);
+        }
+    },
     //Generate html to display table rows
     display: function () {
         var i, 
             template = '';
         
+        //Update data
+        s.update();
+
         for (i = 0; i < s.dataSrc.length; i++) {
             template += '<tr><th>' + s.dataSrc[i].name + ':</th><td class="time">' + s.dataSrc[i].nextShuttle + '</td></tr>';
         }
@@ -123,10 +133,6 @@ var s = {
     //For each location
     //calculate next shuttle time and add to dataSrc object
     init: function () {
-        var shuttleIndex;
-        for (shuttleIndex = 0; shuttleIndex < s.dataSrc.length; shuttleIndex++) {
-            s.dataSrc[shuttleIndex].nextShuttle = s.minutesUntil(shuttleIndex);
-        }
         /* Initial Display */
         s.display();
         /* Refresh loop */
