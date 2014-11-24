@@ -14,10 +14,12 @@ var s = {
         },
         {
             'name': 'Juniper Circle',
-            'times': ['0655', '0710', '0725', '0740', '0755', '0810', '0825', '0840', '0855', '0910', '0925', '0940', '0955', '1010', '1040', '1110', '1140', '1210', '1240', '1310', '1340', '1410', '1440', '1510', '1540', '1610', '1625', '1640', '1655', '1710', '1725', '1840', '1855', '1910', '1940', '2300'],
-            'days': [1, 2, 3, 4, 5]
+            'times': ['0655', '0710', '0725', '0740', '0755', '0810', '0825', '0840', '0855', '0910', '0925', '0940', '0955', '1010', '1040', '1110', '1140', '1210', '1240', '1310', '1340', '1410', '1440', '1510', '1540', '1610', '1625', '1640', '1655', '1710', '1725', '1840', '1855', '1910', '1940'],
+            'days': [1, 2, 3, 4, 5, 0]
         }
     ],
+    noServiceMessage: 'No Service',
+    nowMessage: 'NOW!',
     now: function() {
         return new Date();
     },
@@ -76,35 +78,35 @@ var s = {
             hoursNext,
             minutesNext;
 
-        /* If there is a next shuttle */    
+        // If there is a next shuttle   
         if (s.nextShuttleTime(shuttleIndex)) {
             
-            nowHoursMinutes = s.militaryTime(s.now).match(/.{1,2}/g);
+            nowHoursMinutes = s.militaryTime(s.now()).match(/.{1,2}/g);
             depHoursMinutes = s.nextShuttleTime(shuttleIndex).match(/.{1,2}/g);
             hoursNow = parseInt(nowHoursMinutes[0], 10);
             minutesNow = parseInt(nowHoursMinutes[1], 10);
             hoursNext = parseInt(depHoursMinutes[0], 10);
             minutesNext = parseInt(depHoursMinutes[1], 10);
 
-            /* next shuttle is now */
+            // next shuttle is now
             if (hoursNow === hoursNext && minutesNow === minutesNext) {
-                return 'NOW!';
-            /* next shuttle is > an hour in the future */
+                return s.nowMessage;
+            // next shuttle is > an hour in the future
             } else if (hoursNow + 1 < hoursNext) {
                 if (hoursNext > 12) {
                     hoursNext = hoursNext - 12;
                 }
                 return 'At ' + hoursNext + ':' + s.addLeadingZeros(minutesNext);
-            /* next shuttle is in the next hour */
+            // next shuttle is in the next hour
             } else if (hoursNow < hoursNext) {
                 return s.pluralize(60 - minutesNow + minutesNext, 'Minute');
-            /* next shuttle is in the same hour */
+            // next shuttle is in the same hour
             } else {
                 return s.pluralize(minutesNext - minutesNow, 'Minute');
             }
-        /* there is no next shuttle */
+        // there is no next shuttle
         } else {
-            return 'No Service';
+            return s.noServiceMessage;
         }
     },
     //Generate html to display table rows

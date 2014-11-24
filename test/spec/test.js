@@ -96,21 +96,110 @@
       s.temp2 = null;
     });
 
-    describe('shuttle only runs some days', function () {
-      it('should not run this day', function () {
+    //no service days
+    describe('days the shuttle does not run', function () {
+      it('should not find any shuttles', function () {
         s.now = function () {
           return new Date('Sun Nov 23 2014 08:35:00 GMT-0500 (EST)');
         };
         assert(s.nextShuttleTime(0) === false);
       });
     });
-
+    //normal next shuttle
     describe('next shuttle time', function () {
-      it('should return the next shuttle time', function () {
+      it('should find the next shuttle', function () {
         s.now = function () {
           return new Date('Fri Nov 21 2014 08:35:00 GMT-0500 (EST)');
         };
         assert(s.nextShuttleTime(0) === '0845');
+      });
+    });
+    //start of day
+    describe('start of day', function () {
+      it('should find the first shuttle', function () {
+        s.now = function () {
+          return new Date('Fri Nov 21 2014 05:30:00 GMT-0500 (EST)');
+        };
+        assert(s.nextShuttleTime(0) === '0645');
+      });
+    });
+    //end of day
+    describe('end of day', function () {
+      it('should not find any more shuttles', function () {
+        s.now = function () {
+          return new Date('Fri Nov 21 2014 18:31:00 GMT-0500 (EST)');
+        };
+        assert(s.nextShuttleTime(0) === false);
+      });
+    });
+  });
+  //s.minutesUntil
+  describe('minutesUntil method', function () {
+    beforeEach(function () {
+      s.temp = s.nextShuttleTime;
+      s.temp2 = s.now;
+    });
+    afterEach(function () {
+      s.nextShuttleTime = s.temp;
+      s.now = s.temp2;
+      s.temp = null;
+      s.temp2 = null;
+    });
+    // no service
+    describe('no service', function (){
+      it('should return the no service message', function () {
+        s.nextShuttleTime = function () {
+          return false;
+        };
+        assert(s.minutesUntil() === s.noServiceMessage);
+      });
+    });
+    // shuttle is leaving now
+    describe('shuttle is now', function () {
+      it('should return now message', function () {
+        s.now = function () {
+          return new Date('Fri Nov 21 2014 8:45:00 GMT-0500 (EST)');
+        };
+        s.nextShuttleTime = function () {
+          return '0845';
+        };
+        assert(s.minutesUntil() === s.nowMessage);
+      });
+    });
+    // next shuttle is > an hour in the future
+    describe('shuttle is > an hour in the future', function () {
+      it('should return proper message', function () {
+        s.now = function () {
+          return new Date('Fri Nov 21 2014 3:45:00 GMT-0500 (EST)');
+        };
+        s.nextShuttleTime = function () {
+          return '0645';
+        };
+        assert(s.minutesUntil() === 'At 6:45');
+      });
+    });
+    // next shuttle is in the next hour
+    describe('shuttle is in the next hour', function () {
+      it('should return proper message', function () {
+        s.now = function () {
+          return new Date('Fri Nov 21 2014 11:45:00 GMT-0500 (EST)');
+        };
+        s.nextShuttleTime = function () {
+          return '1215';
+        };
+        assert(s.minutesUntil() === '30 Minutes');
+      });
+    });
+    // next shuttle is in the same hour
+    describe('shuttle is in the same hour', function () {
+      it('should return proper message', function () {
+        s.now = function () {
+          return new Date('Fri Nov 21 2014 12:15:00 GMT-0500 (EST)');
+        };
+        s.nextShuttleTime = function () {
+          return '1230';
+        };
+        assert(s.minutesUntil() === '15 Minutes');
       });
     });
   });
