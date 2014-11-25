@@ -7,7 +7,9 @@ body {
   color: #333;
 }
 
-.hero-unit {
+.container {
+  max-width: 600px;
+  margin: 0 auto;
   text-align: center;
   font-size: 18px;
   font-weight: 200;
@@ -42,6 +44,14 @@ table{
       background-color: #cfc;
       color: #090;
       font-weight: bold;
+      &.noservice{
+        background-color: #ccc;
+        color: #999;
+      }
+      &.now{
+        background-color: #ffff66;
+        color: #f00;
+      }
     }
   }
 }

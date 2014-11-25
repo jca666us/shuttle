@@ -109,11 +109,23 @@ var s = {
             return s.noServiceMessage;
         }
     },
+    // determine css class for display
+    style: function (shuttleIndex, nextShuttle) {
+        if (nextShuttle === s.noServiceMessage) {
+            s.dataSrc[shuttleIndex].cssClass = 'noservice';
+        } else if (nextShuttle === s.nowMessage) {
+            s.dataSrc[shuttleIndex].cssClass = 'now';
+        } else {
+            s.dataSrc[shuttleIndex].cssClass = '';
+        }
+    },
     //Recalculate minutes until for each and store results
     update: function () {
-        var shuttleIndex;
+        var shuttleIndex, nextShuttle;
         for (shuttleIndex = 0; shuttleIndex < s.dataSrc.length; shuttleIndex++) {
-            s.dataSrc[shuttleIndex].nextShuttle = s.minutesUntil(shuttleIndex);
+            nextShuttle = s.minutesUntil(shuttleIndex);
+            s.dataSrc[shuttleIndex].nextShuttle = nextShuttle;
+            s.style(shuttleIndex, nextShuttle);
         }
     },
     //Generate html to display table rows
@@ -125,7 +137,7 @@ var s = {
         s.update();
 
         for (i = 0; i < s.dataSrc.length; i++) {
-            template += '<tr><th>' + s.dataSrc[i].name + ':</th><td class="time">' + s.dataSrc[i].nextShuttle + '</td></tr>';
+            template += '<tr><th>' + s.dataSrc[i].name + ':</th><td class="time ' + s.dataSrc[i].cssClass + '">' + s.dataSrc[i].nextShuttle + '</td></tr>';
         }
 
         $('#row-container').html(template);
