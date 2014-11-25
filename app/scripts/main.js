@@ -15,22 +15,34 @@ var s = {
         {
             'name': 'Juniper Circle',
             'times': ['0655', '0710', '0725', '0740', '0755', '0810', '0825', '0840', '0855', '0910', '0925', '0940', '0955', '1010', '1040', '1110', '1140', '1210', '1240', '1310', '1340', '1410', '1440', '1510', '1540', '1610', '1625', '1640', '1655', '1710', '1725', '1840', '1855', '1910', '1940'],
-            'days': [1, 2, 3, 4, 5, 0]
+            'days': [1, 2, 3, 4, 5]
         }
     ],
+    //Messages
     noServiceMessage: 'No Service',
     nowMessage: 'NOW!',
+
+    //returns current datetime
     now: function() {
         return new Date();
     },
+
+    //extract military time from datetime
+    //returns string
     militaryTime: function (date) {
         var minutes = s.addLeadingZeros(date.getMinutes()),
             hours = s.addLeadingZeros(date.getHours());
         return hours + minutes;
     },
+
+    //return current day 0-6 : 0 = sunday
+    //returns integer
     currentDay: function () {
         return s.now().getDay();
     },
+
+    //add a leading zero to number less than 9
+    //returns string
     addLeadingZeros: function (n) {
         if (n < 10) {
             n = '0' + n;
@@ -39,12 +51,18 @@ var s = {
         }
         return n;
     },
+
+    //pluralize word if value > 1
+    //returns string
     pluralize: function (value, word) {
         if (value === 1) {
             return value + ' ' + word;
         }
         return value + ' ' + word + 's';
     },
+
+    //determines if a given shuttle is running today
+    //returns boolean
     noServiceToday: function (shuttleIndex){
         var days = s.dataSrc[shuttleIndex].days;
         if (days.indexOf(s.currentDay()) === -1){
@@ -52,6 +70,10 @@ var s = {
         }
         return false;
     },
+
+    //determines the next shuttle time
+    //returns either a string of the shuttle military tima
+    //or false if no service or last shuttle has run
     nextShuttleTime: function (shuttleIndex) {
         var i, 
             times = s.dataSrc[shuttleIndex].times;
@@ -70,7 +92,10 @@ var s = {
         //Last shuttle of the day has already run
         return false;
     },
-    minutesUntil: function (shuttleIndex) {
+
+    //generate string for display
+    //returns string
+    shuttleMessage: function (shuttleIndex) {
         var nowHoursMinutes,
             depHoursMinutes,
             hoursNow,
@@ -109,7 +134,9 @@ var s = {
             return s.noServiceMessage;
         }
     },
+
     // determine css class for display
+    //returns string or empty string
     style: function (shuttleIndex, nextShuttle) {
         if (nextShuttle === s.noServiceMessage) {
             s.dataSrc[shuttleIndex].cssClass = 'noservice';
@@ -119,16 +146,20 @@ var s = {
             s.dataSrc[shuttleIndex].cssClass = '';
         }
     },
+
     //Recalculate minutes until for each and store results
+    //returns undefined
     update: function () {
         var shuttleIndex, nextShuttle;
         for (shuttleIndex = 0; shuttleIndex < s.dataSrc.length; shuttleIndex++) {
-            nextShuttle = s.minutesUntil(shuttleIndex);
+            nextShuttle = s.shuttleMessage(shuttleIndex);
             s.dataSrc[shuttleIndex].nextShuttle = nextShuttle;
             s.style(shuttleIndex, nextShuttle);
         }
     },
-    //Generate html to display table rows
+
+    //Generate html to display table rows populated with data
+    //returns undefined
     display: function () {
         var i, 
             template = '';
@@ -142,8 +173,9 @@ var s = {
 
         $('#row-container').html(template);
     },
-    //For each location
-    //calculate next shuttle time and add to dataSrc object
+
+    //Initialize and refresh
+    //returns undefined
     init: function () {
         /* Initial Display */
         s.display();

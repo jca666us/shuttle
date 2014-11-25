@@ -4,17 +4,26 @@
   'use strict';
 
   var testData = [
-        {
-          'name': 'Test Location 1',
-          'times': ['0645', '0700', '0715', '0730', '0745', '0800', '0815', '0830', '0845', '0900', '0915', '0930', '0945', '1000', '1030', '1100', '1130', '1200', '1230', '1300', '1330', '1400', '1430', '1500', '1530', '1600', '1615', '1630', '1645', '1700', '1715', '1730', '1745', '1800', '1830'],
-          'days': [1, 2, 3, 4, 5]
-        },
-        {
-          'name': 'Test Location 2',
-          'times': ['0830', '0845', '0900', '0915', '0930', '0945', '1000', '1030', '1100', '1130', '1200', '1230', '1300', '1330', '1400', '1430', '1500', '1530', '1600', '1615', '1630', '1645', '1700', '1715', '1730', '1745', '1800', '1830'],
-          'days': [1, 2, 3, 4, 5]
-        }
-      ];
+    {
+      'name': 'Test Location 1',
+      'times': ['0645', '0700', '0715', '0730', '0745', '0800', '0815', '0830', '0845', '0900', '0915', '0930', '0945', '1000', '1030', '1100', '1130', '1200', '1230', '1300', '1330', '1400', '1430', '1500', '1530', '1600', '1615', '1630', '1645', '1700', '1715', '1730', '1745', '1800', '1830'],
+      'days': [1, 2, 3, 4, 5]
+    },
+    {
+      'name': 'Test Location 2',
+      'times': ['0830', '0845', '0900', '0915', '0930', '0945', '1000', '1030', '1100', '1130', '1200', '1230', '1300', '1330', '1400', '1430', '1500', '1530', '1600', '1615', '1630', '1645', '1700', '1715', '1730', '1745', '1800', '1830'],
+      'days': [1, 2, 3, 4, 5]
+    }
+  ];
+  beforeEach(function () {
+    s.tempData = s.dataSrc;
+    s.dataSrc = testData;
+  });
+  
+  afterEach(function () {
+    s.dataSrc = s.tempData;
+    s.tempData = null;
+  });
   //s.now
   describe('now method', function () {
     it('should return a date object', function () {
@@ -47,6 +56,7 @@
       assert(s.addLeadingZeros(59) === '59');
     });
   });
+
   //s.pluralize
   describe('pluralize method', function () {
     it('should pluralize', function () {
@@ -56,6 +66,7 @@
       assert(s.pluralize(1, 'hour') === '1 hour');
     });
   });
+
   //s.noServiceToday
   describe('noServiceToday method', function () {
     
@@ -86,19 +97,16 @@
       });
     });
   });
+
   //s.nextShuttleTime
   describe('nextShuttleTime method', function () {
     beforeEach(function () {
-      s.temp = s.dataSrc;
-      s.temp2 = s.now;
-      s.dataSrc = testData;
+      s.temp = s.now;
     });
     
     afterEach(function () {
-      s.dataSrc = s.temp;
-      s.now = s.temp2;
+      s.now = s.temp;
       s.temp = null;
-      s.temp2 = null;
     });
 
     //no service days
@@ -110,6 +118,7 @@
         assert(s.nextShuttleTime(0) === false);
       });
     });
+
     //normal next shuttle
     describe('next shuttle time', function () {
       it('should find the next shuttle', function () {
@@ -119,6 +128,7 @@
         assert(s.nextShuttleTime(0) === '0845');
       });
     });
+
     //start of day
     describe('start of day', function () {
       it('should find the first shuttle', function () {
@@ -128,6 +138,7 @@
         assert(s.nextShuttleTime(0) === '0645');
       });
     });
+
     //end of day
     describe('end of day', function () {
       it('should not find any more shuttles', function () {
@@ -138,8 +149,9 @@
       });
     });
   });
-  //s.minutesUntil
-  describe('minutesUntil method', function () {
+
+  //s.shuttleMessage
+  describe('shuttleMessage method', function () {
     beforeEach(function () {
       s.temp = s.nextShuttleTime;
       s.temp2 = s.now;
@@ -150,15 +162,17 @@
       s.temp = null;
       s.temp2 = null;
     });
+
     // no service
     describe('no service', function (){
       it('should return the no service message', function () {
         s.nextShuttleTime = function () {
           return false;
         };
-        assert(s.minutesUntil() === s.noServiceMessage);
+        assert(s.shuttleMessage() === s.noServiceMessage);
       });
     });
+
     // shuttle is leaving now
     describe('shuttle is now', function () {
       it('should return now message', function () {
@@ -168,9 +182,10 @@
         s.nextShuttleTime = function () {
           return '0845';
         };
-        assert(s.minutesUntil() === s.nowMessage);
+        assert(s.shuttleMessage() === s.nowMessage);
       });
     });
+
     // next shuttle is > an hour in the future
     describe('shuttle is > an hour in the future', function () {
       it('should return proper message', function () {
@@ -180,9 +195,10 @@
         s.nextShuttleTime = function () {
           return '0645';
         };
-        assert(s.minutesUntil() === 'At 6:45');
+        assert(s.shuttleMessage() === 'At 6:45');
       });
     });
+
     // next shuttle is > an hour in the future
     describe('shuttle is > an hour in the future and in the afternoon', function () {
       it('should return proper message', function () {
@@ -192,9 +208,10 @@
         s.nextShuttleTime = function () {
           return '1400';
         };
-        assert(s.minutesUntil() === 'At 2:00');
+        assert(s.shuttleMessage() === 'At 2:00');
       });
     });
+
     // next shuttle is in the next hour
     describe('shuttle is in the next hour', function () {
       it('should return proper message', function () {
@@ -204,9 +221,10 @@
         s.nextShuttleTime = function () {
           return '1215';
         };
-        assert(s.minutesUntil() === '30 Minutes');
+        assert(s.shuttleMessage() === '30 Minutes');
       });
     });
+
     // next shuttle is in the same hour
     describe('shuttle is in the same hour', function () {
       it('should return proper message', function () {
@@ -216,21 +234,13 @@
         s.nextShuttleTime = function () {
           return '1230';
         };
-        assert(s.minutesUntil() === '15 Minutes');
+        assert(s.shuttleMessage() === '15 Minutes');
       });
     });
   });
+
   //s.style
   describe('style method', function () {
-    beforeEach(function () {
-      s.temp = s.dataSrc;
-      s.dataSrc = testData;
-    });
-    
-    afterEach(function () {
-      s.dataSrc = s.temp;
-      s.temp = null;
-    });
     describe('when given shuttleIndex and nextShuttle', function () {
       it('should add the noservice class', function () {
          s.style(0, s.noServiceMessage)
@@ -246,19 +256,16 @@
       });
     });
   });
+
   //s.update
   describe('update method', function () {
     beforeEach(function () {
-      s.temp = s.dataSrc;
-      s.temp2 = s.now;
-      s.dataSrc = testData;
+      s.temp = s.now;
     });
     
     afterEach(function () {
-      s.dataSrc = s.temp;
-      s.now = s.temp2;
+      s.now = s.temp;
       s.temp = null;
-      s.temp2 = null;
     });
 
     describe('update', function () {
