@@ -1,3 +1,5 @@
+/* global shuttleData */
+
 'use strict';
 
 var s = {

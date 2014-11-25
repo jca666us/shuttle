@@ -243,16 +243,16 @@
   describe('style method', function () {
     describe('when given shuttleIndex and nextShuttle', function () {
       it('should add the noservice class', function () {
-         s.style(0, s.noServiceMessage)
-         assert(s.dataSrc[0].cssClass == 'noservice');
+         s.style(0, s.noServiceMessage);
+         assert(s.dataSrc[0].cssClass === 'noservice');
       });
       it('should add the now class', function () {
-         s.style(1, s.nowMessage)
-         assert(s.dataSrc[1].cssClass == 'now');
+         s.style(1, s.nowMessage);
+         assert(s.dataSrc[1].cssClass === 'now');
       });
       it('should show default class', function () {
-         s.style(0, '0930')
-         assert(s.dataSrc[0].cssClass == '');
+         s.style(0, '0930');
+         assert(s.dataSrc[0].cssClass === '');
       });
     });
   });
