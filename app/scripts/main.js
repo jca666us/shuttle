@@ -157,8 +157,7 @@ var s = {
         for (i = 0; i < s.dataSrc.length; i++) {
             template += '<tr><th>' + s.dataSrc[i].name + ':</th><td class="time ' + s.dataSrc[i].cssClass + '">' + s.dataSrc[i].nextShuttle + '</td></tr>';
         }
-
-        $('#row-container').html(template);
+        document.getElementById('row-container').innerHTML = template;
     },
 
     //Initialize and refresh
