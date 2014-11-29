@@ -1,10 +1,29 @@
 // bower:scss
 // endbower
 
+//Color palette
+
+$primary-light: #b3dced;
+$primary-dark: #29b8e5;
+$primary-darker: #20b0e0;
+$dark: #039;
+$secondary: #9cf;
+$tertiary: #999;
+$light: #eee;
+$lightest: #fff;
+
 body {
-  background: #000;
+  background: $primary-darker;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  color: #333;
+  color: $dark;
+}
+
+a, a:visited{
+  color: $light;
+}
+
+a:hover, a:active{
+  color: $lightest;
 }
 
 .container {
@@ -14,50 +33,81 @@ body {
   font-size: 18px;
   font-weight: 200;
   line-height: 30px;
-  background-color: #eee;
+  
+  background: $primary-dark; /* Old browsers */
+  background: -moz-linear-gradient(top, $primary-light 0%, $primary-dark 100%); /* FF3.6+ */
+  background: -webkit-linear-gradient(top, $primary-light 0%,$primary-dark 100%); /* Chrome10+,Safari5.1+ */
+  background: -ms-linear-gradient(top, $primary-light 0%,$primary-dark 100%); /* IE10+ */
+  background: linear-gradient(to bottom, $primary-light 0%,$primary-dark 100%); /* W3C */
   border-radius: 6px;
   padding: 5px 10px 10px;
-  h1 {
+}
+
+h1 {
     font-size: 24px;
     letter-spacing: -1px;
     margin: .2em 0;
-  }
+    letter-spacing: .05em;
 }
 
 table{
   width: 100%;
   text-align: left;
   border-collapse: collapse;
-  thead{
-    th{
-      background-color: #000;
-      color: #fff;
-      font-size: 80%;
+}
+thead{
+  th{
+    background: #666666; /* Old browsers */
+    background: -moz-linear-gradient(top, #666666 0%, #333333 36%, #6e7987 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#666666), color-stop(36%,#333333), color-stop(100%,#6e7987)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #666666 0%,#333333 36%,#6e7987 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #666666 0%,#333333 36%,#6e7987 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #666666 0%,#333333 36%,#6e7987 100%); /* IE10+ */
+    background: linear-gradient(to bottom, #666666 0%,#333333 36%,#6e7987 100%); /* W3C */
+    color: $light;
+    font-size: 80%;
+    letter-spacing: .05em;
+    &:first-child{
+      border-radius: 6px 0 0 0;
+    }
+    &:last-child{
+      border-radius: 0 6px 0 0;
     }
   }
-  tbody{
-    th{
-      background-color: #fff;
-      }
+}
+tbody{
+  th{
+    background-color: $lightest;
+    }
 
-    td{
-      background-color: #cfc;
-      color: #090;
-      font-weight: bold;
-      &.noservice{
-        background-color: #ccc;
-        color: #999;
-      }
-      &.now{
-        background-color: #ffff66;
-        color: #f00;
-      }
+  td{
+    background-color: $light;
+    color: $dark;
+    font-weight: bold;
+    &.noservice{
+      color: $tertiary;
+      font-style: italic;
+    }
+    &.now{
+      color: #f60;
     }
   }
+  
 }
 
 th, td{
   padding: .2em .5em;
-  border-bottom: 1px solid #000;
+  border-bottom: 3px solid $primary-dark;
+}
+
+tr:last-child td, tr:last-child th{
+  border-bottom: 0;
+}
+
+footer{
+  font-size: 80%;
+  text-align: center;
+  margin: 10px 0;
+  color: $light;
 }
 
