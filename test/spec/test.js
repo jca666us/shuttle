@@ -279,4 +279,17 @@
       });
     });
   });
+  /* TODO: Get mocha-casperjs working : why can't it find casper?
+  describe('DOM Tests', function () {
+    before(function () {
+      casper.start('http://localhost:9001');
+    });
+
+    it('should have the correct page title', function () {
+      casper.then(function() {
+        'Shuttle'.should.matchTitle
+      });
+    });
+  });
+*/
 })();
