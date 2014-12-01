@@ -9,6 +9,9 @@ $primary-darker: #20b0e0;
 $dark: #039;
 $secondary: #9cf;
 $tertiary: #999;
+$tertiary-dark: #666;
+$tertiary-darkest: #333;
+$underglow: #6e7987;
 $light: #eee;
 $lightest: #fff;
 
@@ -47,7 +50,13 @@ h1 {
     font-size: 24px;
     letter-spacing: -1px;
     margin: .2em 0;
-    letter-spacing: .05em;
+    letter-spacing: .01em;
+}
+
+h2 {
+  font-size: 18px;
+  margin: 0;
+  border-bottom: 3px solid $light;
 }
 
 table{
@@ -57,13 +66,13 @@ table{
 }
 thead{
   th{
-    background: #666666; /* Old browsers */
-    background: -moz-linear-gradient(top, #666666 0%, #333333 36%, #6e7987 100%); /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#666666), color-stop(36%,#333333), color-stop(100%,#6e7987)); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top, #666666 0%,#333333 36%,#6e7987 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(top, #666666 0%,#333333 36%,#6e7987 100%); /* Opera 11.10+ */
-    background: -ms-linear-gradient(top, #666666 0%,#333333 36%,#6e7987 100%); /* IE10+ */
-    background: linear-gradient(to bottom, #666666 0%,#333333 36%,#6e7987 100%); /* W3C */
+    background: $tertiary-dark; /* Old browsers */
+    background: -moz-linear-gradient(top, $tertiary-dark 0%, $tertiary-darkest 36%, $underglow 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$tertiary-dark), color-stop(36%,$tertiary-darkest), color-stop(100%,$underglow)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, $tertiary-dark 0%,$tertiary-darkest 36%,$underglow 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, $tertiary-dark 0%,$tertiary-darkest 36%,$underglow 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, $tertiary-dark 0%,$tertiary-darkest 36%,$underglow 100%); /* IE10+ */
+    background: linear-gradient(to bottom, $tertiary-dark 0%,$tertiary-darkest 36%,$underglow 100%); /* W3C */
     color: $light;
     font-size: 80%;
     letter-spacing: .05em;
@@ -76,6 +85,9 @@ thead{
   }
 }
 tbody{
+  tr{
+    cursor: pointer;
+  }
   th{
     background-color: $lightest;
     }
@@ -102,6 +114,32 @@ th, td{
 
 tr:last-child td, tr:last-child th{
   border-bottom: 0;
+}
+
+#departures {
+  margin-top: 10px;
+  background-color: $lightest;
+  padding: 10px;
+  text-align: left;
+  font-size: 80%;
+  position: relative;
+  line-height: 1.55em;
+  p{
+    margin: .25em 0;
+  }
+}
+
+#close{
+  width: 20px;
+  background-color: $tertiary-dark;
+  color: $light;
+  position: absolute;
+  top: 0;
+  right: 0;
+  text-align: center;
+  padding: 0;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 footer{

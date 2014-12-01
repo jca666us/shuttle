@@ -22,6 +22,25 @@ var s = {
         return hours + minutes;
     },
 
+    //convert a 4 digit militaty time to civilian time display like 9:30 PM
+    civilianTime: function (time) {
+        var hours = parseInt(time.substring ( 0,2 )),
+            minutes = time.substring ( 2,4 ),
+            identifier = 'am';
+
+            if(hours === 12){
+              identifier = 'pm';
+            }
+            if(hours === 0){
+              hours = 12;
+            }
+            if(hours > 12){
+              hours = hours - 12;
+              identifier='pm';
+            }
+            return hours + ':' + minutes + '&nbsp;' + identifier;
+    },
+
     //return current day 0-6 : 0 = sunday
     //returns integer
     currentDay: function () {
@@ -144,7 +163,12 @@ var s = {
             s.style(shuttleIndex, nextShuttle);
         }
     },
-
+    //factory to create click event handlers for each shuttle stop
+    makeClickHandler: function (i) {
+        return function () {
+                    s.displayDepartures(i);
+                };
+    },
     //Generate html to display table rows populated with data
     //returns undefined
     display: function () {
@@ -155,9 +179,52 @@ var s = {
         s.update();
 
         for (i = 0; i < s.dataSrc.length; i++) {
-            template += '<tr><th>' + s.dataSrc[i].name + ':</th><td class="time ' + s.dataSrc[i].cssClass + '">' + s.dataSrc[i].nextShuttle + '</td></tr>';
+            template += '<tr id="stop'+ i +'"><th>' + s.dataSrc[i].name + ':</th><td class="time ' + s.dataSrc[i].cssClass + '">' + s.dataSrc[i].nextShuttle + '</td></tr>';
         }
         document.getElementById('row-container').innerHTML = template;
+        //Assign click handlers for each stop
+        for (i = 0; i < s.dataSrc.length; i++) {
+            document.getElementById('stop' + i).addEventListener('click', s.makeClickHandler(i));
+        }      
+    },
+
+    //Generate departure time html
+    //returns html string
+    listTimes: function (shuttleIndex) {
+        var data = s.dataSrc[shuttleIndex].times,
+            html = '',
+            i;
+
+        for (i = 0; i < data.length; i++) {
+            html += s.civilianTime(data[i]);
+            //commas for all but last
+            if (i < data.length - 1) {
+                html += ', ';
+            }
+        }
+        return html;
+
+    },
+    //Display departures content
+    displayDepartures: function (shuttleIndex) {
+        var template = '<div id="departures"><h2>'+
+            s.dataSrc[shuttleIndex].name+
+            '</h2>'+
+            //TODO: Read shuttle days from the data file
+            '<p>Monday - Friday</p>'+
+            '<span id="close">X</span>'+
+            '<p>'+
+            s.listTimes(shuttleIndex)+
+            '</p></div>';
+
+        document.getElementById('departures-container').innerHTML = template;
+        document.getElementById('close').addEventListener('click', s.closeDepartures);
+
+    },
+
+    closeDepartures: function () {
+        document.getElementById('close').removeEventListener('click');
+        document.getElementById('departures-container').innerHTML = '';
     },
 
     //Initialize and refresh
