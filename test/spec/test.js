@@ -13,6 +13,11 @@
       'name': 'Test Location 2',
       'times': ['0830', '0845', '0900', '0915', '0930', '0945', '1000', '1030', '1100', '1130', '1200', '1230', '1300', '1330', '1400', '1430', '1500', '1530', '1600', '1615', '1630', '1645', '1700', '1715', '1730', '1745', '1800', '1830'],
       'days': [1, 2, 3, 4, 5]
+    },
+    {
+      'name': 'Test Location 3',
+      'times': ['0830', '0845', '0900'],
+      'days': [1, 2, 3, 4, 5]
     }
   ];
   beforeEach(function () {
@@ -42,6 +47,22 @@
     it('should convert 23h 59m to 2359', function () {
       var d = new Date (2014, 10, 23, 23, 59);
       assert(s.militaryTime(d) === '2359');
+    });
+  });
+
+  //s.civilianTime
+  describe('civilianTime method', function () {
+    it('should convert 0101 to 1:01 am', function () {
+      assert(s.civilianTime('0101') === '1:01&nbsp;am');
+    });
+    it('should convert 1200 to 12:00 pm', function () {
+      assert(s.civilianTime('1200') === '12:00&nbsp;pm');
+    });
+    it('should convert 1530 to 3:30 pm', function () {
+      assert(s.civilianTime('1530') === '3:30&nbsp;pm');
+    });
+    it('should convert 0000 to 12:00 am', function () {
+      assert(s.civilianTime('0000') === '12:00&nbsp;am');
     });
   });
 
@@ -279,6 +300,17 @@
       });
     });
   });
+
+  describe('listTimes method', function () {
+    it('should return the correct html', function () {
+      var html = s.listTimes(0);
+      assert.isString(html);
+      //TODO: Data from other stops is funky
+      //assert.include(html, '12:30&nbsp;am, 12:45&nbsp;am, 12:00&nbsp;am');
+      assert.include(html, '6:45&nbsp;am, 7:00&nbsp;am, 7:15&nbsp;am, 7:30&nbsp;am, 7:45&nbsp;am, 12:00&nbsp;am, 12:15&nbsp;am, 12:30&nbsp;am, 12:45&nbsp;am, 12:00&nbsp;am, 12:15&nbsp;am, 12:30&nbsp;am, 12:45&nbsp;am, 10:00&nbsp;am, 10:30&nbsp;am, 11:00&nbsp;am, 11:30&nbsp;am, 12:00&nbsp;pm, 12:30&nbsp;pm, 1:00&nbsp;pm, 1:30&nbsp;pm, 2:00&nbsp;pm, 2:30&nbsp;pm, 3:00&nbsp;pm, 3:30&nbsp;pm, 4:00&nbsp;pm, 4:15&nbsp;pm, 4:30&nbsp;pm, 4:45&nbsp;pm, 5:00&nbsp;pm, 5:15&nbsp;pm, 5:30&nbsp;pm, 5:45&nbsp;pm, 6:00&nbsp;pm, 6:30&nbsp;pm');
+    });
+  });
+
   /* TODO: Get mocha-casperjs working : why can't it find casper?
   describe('DOM Tests', function () {
     before(function () {

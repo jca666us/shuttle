@@ -23,6 +23,7 @@ var s = {
     },
 
     //convert a 4 digit militaty time to civilian time display like 9:30 PM
+    //returns string like 3:30&nbsp;pm
     civilianTime: function (time) {
         var hours = parseInt(time.substring ( 0,2 )),
             minutes = time.substring ( 2,4 ),
@@ -206,6 +207,7 @@ var s = {
 
     },
     //Display departures content
+    //returns undefined
     displayDepartures: function (shuttleIndex) {
         var template = '<div id="departures"><h2>'+
             s.dataSrc[shuttleIndex].name+
@@ -219,9 +221,10 @@ var s = {
 
         document.getElementById('departures-container').innerHTML = template;
         document.getElementById('close').addEventListener('click', s.closeDepartures);
-
     },
 
+    //remove the departures html from the dom
+    //returns undefined
     closeDepartures: function () {
         document.getElementById('close').removeEventListener('click');
         document.getElementById('departures-container').innerHTML = '';
